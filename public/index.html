@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTMX with React in WebComponent</title>
+  <link href="/output.css" rel="stylesheet">
+</head>
+<body >
+
+<!--
+  <h4>Outside of WebComponents</h4>
+  <style>
+  p, button {
+    font-size: 10px;
+    color: grey;
+  }
+
+  </style>
+  <p id="content-1">REPLACE this</p>
+  <button class="button"
+    id="load-button-1"
+    hx-get="/data/vars.html"
+    hx-trigger="click"
+    hx-target="#content-1"
+  >Load New Content</button>
+
+
+  <h1>WebComponents</h1>
+  <demo-1 message='DEMO'></demo-1>
+
+-->
+
+  <div id=root>
+  </div>
+
+<!--
+  <demo-1 message='DEMO 2'></demo-1>
+-->
+
+  <script src="https://unpkg.com/htmx.org@2.0.4/dist/htmx.js" integrity="sha384-oeUn82QNXPuVkGCkcrInrS1twIxKhkZiFfr2TdiuObZ3n3yIeMiqcRzkIcguaof1" crossorigin="anonymous"></script>
+
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel" src="webcomponent.js"></script>
+</body>
+</html>
