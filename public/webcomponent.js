@@ -1,3 +1,14 @@
+function passHTMX(html, target) {
+  console.log("sending",html)
+  const targetComponent = document.querySelector(target);
+  if (targetComponent) {
+    targetComponent.internal_getHTMX(html); 
+  }
+}
+//function getHTMX(html) {
+//}
+
+
 class Demo1 extends HTMLElement {
   constructor(){
     super();
@@ -30,11 +41,19 @@ class Demo1 extends HTMLElement {
       <p id="content">REPLACE ME</p>
       <button class="button"
         id="load-button"
-        hx-get="/data/vars.html"
+        hx-get="/data/vars-1.html"
         hx-trigger="click"
         hx-target="#content"
       >Load New Content</button>
+
+      <!-- Button to add new item -->
+      <button id="add-btn">Interact with "Element inside another shadowRoot"</button>
     `
+    this.send = `
+    <div id="temp-revealed" hx-get="/data/vars.html" hx-swap="none" hx-trigger="revealed">
+    </div>
+    `
+    this.target = "demo-2"
 
     this.shadowRoot.appendChild(this.wrapper);
 
@@ -50,6 +69,11 @@ class Demo1 extends HTMLElement {
   connectedCallback() {
     // for just JS
     this.updateMessage()
+    this.shadowRoot.querySelector('#add-btn').addEventListener('click', () => {
+      if (typeof this.externalFunction === 'function') {
+        this.externalFunction(this.send, this.target);  // Calls the light DOM function
+      }
+    });
     // for HTMX
     htmx.process(this.shadowRoot);
 
@@ -89,8 +113,62 @@ class Demo1 extends HTMLElement {
   // <><><><><><><> HELPER FUNKS <><><><><><><>
 
 }
+class Demo2 extends HTMLElement {
+  constructor(){
+    super();
+    this.attachShadow({ mode: 'open' });
+
+    this.wrapper = document.createElement('div');
+    this.wrapper.className = 'wrapper'
+    this.wrapper.innerHTML = `
+      <style>
+        .wrapper {
+          font-size: 16px;
+          color: #333;
+          padding: 10px;
+          border: 1px solid #ddd;
+          border-radius: 5px;
+          border-color: blue;
+          display: inline-block;
+        }
+      </style>
+
+      <h2>Element inside another shadowRoot</h2>
+
+      <!-- List container -->
+      <ul id="item-list">
+      </ul>
+
+
+      `
+
+
+    this.shadowRoot.appendChild(this.wrapper);
+
+  }
+  internal_getHTMX(html){
+    const fragment = document.createRange().createContextualFragment(html);
+    this.wrapper.appendChild(fragment);
+
+    htmx.process(this.shadowRoot);
+  }
+  // <><><><><><><> LIFECYCLE <><><><><><><>
+  connectedCallback() {
+    // for HTMX
+    htmx.process(this.shadowRoot);
+  }
+
+  // <><><><><><><> LIFECYCLE <><><><><><><>
+
+}
 
 customElements.define('demo-1', Demo1);
+
+const demoElement1 = document.querySelector('demo-1');
+demoElement1.externalFunction = passHTMX;
+
+customElements.define('demo-2', Demo2);
+
 
 
 

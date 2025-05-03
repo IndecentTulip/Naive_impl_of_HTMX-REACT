@@ -19,6 +19,9 @@ const Main = () => {
       <div>
         <p>shadow DOM: </p>
         <demo-1 message='DEMO'></demo-1>
+        <demo-2></demo-2>
+        <div id="light-dom-output"></div>
+
       </div>
     </div>
 
