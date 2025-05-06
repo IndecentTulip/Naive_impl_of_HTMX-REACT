@@ -1,12 +1,22 @@
-function passHTMX(html, target) {
+// standard for self use
+// 1. external functions
+// 2. web component classes declaration
+// 3. defining/assigning funcs for web components
+
+
+function demo1_passHTMX(html, target) {
   console.log("sending",html)
   const targetComponent = document.querySelector(target);
   if (targetComponent) {
-    targetComponent.internal_getHTMX(html); 
+    targetComponent.external_getHTMX1(html); 
   }
 }
-//function getHTMX(html) {
-//}
+function demo2_getHTMX(html) {
+  const fragment = document.createRange().createContextualFragment(html);
+  this.wrapper.appendChild(fragment);
+
+  htmx.process(this.shadowRoot);
+}
 
 
 class Demo1 extends HTMLElement {
@@ -17,6 +27,7 @@ class Demo1 extends HTMLElement {
     this.wrapper = document.createElement('div');
     this.wrapper.className = 'wrapper'
     this.wrapper.innerHTML = `
+      <div className="wrapper">
       <style>
         .wrapper {
           font-size: 16px;
@@ -33,10 +44,6 @@ class Demo1 extends HTMLElement {
       </style>
 
 
-
-      <h2>Default JS with web component</h2>
-      <p id='message_t' messageTEST='I am not used'></p>
-      <input id='message_i'></input>
       <h2>HTMX with web component</h2>
       <p id="content">REPLACE ME</p>
       <button class="button"
@@ -57,21 +64,12 @@ class Demo1 extends HTMLElement {
 
     this.shadowRoot.appendChild(this.wrapper);
 
-    const input = this.shadowRoot.querySelector('#message_i');
-    input.addEventListener('keydown', (event) => {
-      if (event.key == 'Enter'){
-        this.setAttribute('message', event.target.value)
-      }
-    });
-
   }
   // <><><><><><><> LIFECYCLE <><><><><><><>
   connectedCallback() {
-    // for just JS
-    this.updateMessage()
     this.shadowRoot.querySelector('#add-btn').addEventListener('click', () => {
-      if (typeof this.externalFunction === 'function') {
-        this.externalFunction(this.send, this.target);  // Calls the light DOM function
+      if (typeof this.external_passHTMX1 === 'function') {
+        this.external_passHTMX1(this.send, this.target);  // Calls the light DOM function
       }
     });
     // for HTMX
@@ -79,38 +77,8 @@ class Demo1 extends HTMLElement {
 
     console.log('Element connected to the DOM');
 
-    console.log(this.getAttribute('message'));
-    console.log(this.shadowRoot.querySelector('#message_t').getAttribute('messageTEST'));
   }
-  disconnectedCallback() {
-    console.log('Element disconnected from the DOM');
-  }
-  adoptedCallback() {
-    console.log('Element adopted into a new document');
-  }
-
-  static get observedAttributes() {
-    return ['message'];
-    // ^^ IS A MESSAGE FROM <demo-1> !!!!!!!!!!!!
-  }
-
-  attributeChangedCallback(name, oldValue, newValue) {
-    // name is name of Attribute that is changed AKA 'message'
-    console.log(`Attribute ${name} changed from ${oldValue} to ${newValue}`);
-    if (name === 'message'){
-      this.updateMessage()
-    }
-  }
-
   // <><><><><><><> LIFECYCLE <><><><><><><>
-
-
-  // <><><><><><><> HELPER FUNKS <><><><><><><>
-  updateMessage(){
-    this.shadowRoot.querySelector('#message_t').textContent = this.getAttribute('message');
-  }
-
-  // <><><><><><><> HELPER FUNKS <><><><><><><>
 
 }
 class Demo2 extends HTMLElement {
@@ -138,19 +106,10 @@ class Demo2 extends HTMLElement {
       <!-- List container -->
       <ul id="item-list">
       </ul>
-
-
       `
-
 
     this.shadowRoot.appendChild(this.wrapper);
 
-  }
-  internal_getHTMX(html){
-    const fragment = document.createRange().createContextualFragment(html);
-    this.wrapper.appendChild(fragment);
-
-    htmx.process(this.shadowRoot);
   }
   // <><><><><><><> LIFECYCLE <><><><><><><>
   connectedCallback() {
@@ -165,9 +124,12 @@ class Demo2 extends HTMLElement {
 customElements.define('demo-1', Demo1);
 
 const demoElement1 = document.querySelector('demo-1');
-demoElement1.externalFunction = passHTMX;
+demoElement1.external_passHTMX1 = demo1_passHTMX;
 
 customElements.define('demo-2', Demo2);
+
+const demoElement2 = document.querySelector('demo-2');
+demoElement2.external_getHTMX1 = demo2_getHTMX;
 
 
 

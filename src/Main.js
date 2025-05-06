@@ -10,6 +10,7 @@ const Main = () => {
     setCount(prevCount => prevCount + 1);
   };
 
+
   return (
     <div style={{ textAlign: 'center', marginTop: '50px' }}>
       <h1>React State Update</h1>
