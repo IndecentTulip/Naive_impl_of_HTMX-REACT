@@ -13,6 +13,7 @@ const Main = () => {
 
   return (
     <div style={{ textAlign: 'center', marginTop: '50px' }}>
+
       <h1>React State Update</h1>
       <p>The count is: <strong>{count}</strong></p>
       <button onClick={handleClick}>Increment</button>
@@ -21,6 +22,7 @@ const Main = () => {
         <p>shadow DOM: </p>
         <demo-1 message='DEMO'></demo-1>
         <demo-2></demo-2>
+        <demo-3></demo-3>
         <div id="light-dom-output"></div>
 
       </div>

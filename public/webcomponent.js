@@ -23,11 +23,16 @@ class Demo1 extends HTMLElement {
   constructor(){
     super();
     this.attachShadow({ mode: 'open' });
+    const cssText = fetch('index.css').then(res => res.text());
+
+    const style = document.createElement('style');
+    style.textContent = cssText;
+
+    this.shadowRoot.appendChild(style);
 
     this.wrapper = document.createElement('div');
     this.wrapper.className = 'wrapper'
     this.wrapper.innerHTML = `
-      <div className="wrapper">
       <style>
         .wrapper {
           font-size: 16px;
