@@ -40,17 +40,17 @@ const Demo1 = () => {
 
     {state &&(
     <div ref={containerRef} className="space-y-4">
-      <h3 className="text-2xl font-bold mb-4">React State Update</h3>
-      <p className="mb-4 text-lg">
-        State Updated: <strong>{count}</strong>
-      </p>
+        <h3 className="text-2xl font-bold mb-4">React State Update</h3>
+          <p className="mb-4 text-lg">
+            State Updated: <strong>{count}</strong>
+          </p>
 
-      <button
-        onClick={handleClick}
-        className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition"
-      >
-        Increment State
-      </button>
+        <button
+          onClick={handleClick}
+          className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition"
+        >
+          Increment State
+        </button>
 
       <h3 className="text-lg font-medium">HTMX</h3>
       <p id="content" className="text-gray-700 border p-2 rounded bg-gray-50">
