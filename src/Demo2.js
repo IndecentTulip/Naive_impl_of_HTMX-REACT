@@ -11,7 +11,7 @@ const Demo2 = () => {
 
   return (
     <div ref={containerRef}>
-      <h2>Another Component:</h2>
+      <h3>Another Component:</h3>
 
       <ul id="item-list">
       </ul>
